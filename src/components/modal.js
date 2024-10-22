@@ -9,6 +9,9 @@ function openPopup(element) {
 // функция удаления модального окна
 function closePopup(element) {
   element.classList.remove('popup_is-opened');
+
+  document.removeEventListener('keydown', escClosePopup);
+  element.removeEventListener('click', clickClosePopup);
 }
 
 // функция удаления модального окна на esc
@@ -16,8 +19,6 @@ function escClosePopup(evt) {
   if (evt.key === 'Escape') {
     const popup = document.querySelector('.popup_is-opened');
     closePopup(popup);
-
-    evt.currentTarget.removeEventListener('keydown', escClosePopup);
   }
 }
 
@@ -26,9 +27,6 @@ function clickClosePopup(evt) {
   if (evt.currentTarget === evt.target) {
     const popup = document.querySelector('.popup_is-opened');
     closePopup(popup);
-
-    evt.currentTarget.removeEventListener('click', clickClosePopup);
-    document.removeEventListener('keydown', escClosePopup);
   }
 }
 

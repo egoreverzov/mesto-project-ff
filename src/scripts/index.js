@@ -82,8 +82,7 @@ function handleEditForm(evt) {
   profileName.textContent = cardNameValue;
   profileDescr.textContent = cardOccupationValue;
 
-  const popup = document.querySelector('.popup_is-opened');
-  closePopup(popup);
+  closePopup(editPopup);
 }
 
 formEdit.addEventListener('submit', handleEditForm); 
@@ -101,8 +100,7 @@ function addNewCard(evt) {
   cardsList.prepend(newCard);
 
   evt.currentTarget.reset();
-  const popup = document.querySelector('.popup_is-opened');
-  closePopup(popup);
+  closePopup(addPopup);
 }
 
 formAddCard.addEventListener('submit', addNewCard);
