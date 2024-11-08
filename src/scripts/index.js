@@ -25,8 +25,8 @@ const closePopupBtns = document.querySelectorAll('.popup__close');
 
 // imports
 import '../pages/index.css';
-import { createCard, removeCardElement, handleLike } from '../components/card.js'
-import { openPopup, closePopup, clickClosePopup } from '../components/modal.js'
+import { createCard, removeCardElement, handleLike } from '../components/card.js';
+import { openPopup, closePopup } from '../components/modal.js';
 import { initialCards } from './cards.js';
 
 
@@ -66,11 +66,6 @@ editButton.addEventListener('click', () => {
 addButton.addEventListener('click', () => { 
   openPopup(addPopup);
 });
-
-editPopup.addEventListener('click', clickClosePopup);
-addPopup.addEventListener('click', clickClosePopup);
-imgPopupOpen.addEventListener('click', clickClosePopup);
-
 
 // изменить имя/описание в модальном окне
 function handleEditForm(evt) {

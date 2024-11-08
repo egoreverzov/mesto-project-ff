@@ -30,4 +30,4 @@ function clickClosePopup(evt) {
   }
 }
 
-export { openPopup, closePopup, clickClosePopup }
+export { openPopup, closePopup }

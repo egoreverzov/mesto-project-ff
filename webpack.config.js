@@ -8,7 +8,7 @@ module.exports = {
   output: {
       path: path.resolve(__dirname, 'dist'), // сссылка на текущую папку(абс путь до тек папки)
       filename: 'main.js',
-              publicPath: ''
+      publicPath: ''
   },
   mode: 'development', // added dev mode
   devServer: {

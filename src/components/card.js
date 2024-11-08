@@ -1,5 +1,5 @@
 // @todo: Функция создания карточки
-function createCard(card, removeCard, openImgPopupModal, likeCard) {
+function createCard({link, name}, removeCard, openImgPopupModal, likeCard) {
   const cardsTemplate = document.querySelector('#card-template').content;
   const cardsElement = cardsTemplate.querySelector('.card').cloneNode(true);
 
@@ -7,16 +7,16 @@ function createCard(card, removeCard, openImgPopupModal, likeCard) {
   const cardImage = cardsElement.querySelector('.card__image');
   const cardTitle = cardsElement.querySelector('.card__title');
 
-  cardImage.src = card.link;
-  cardImage.alt = card.name;
-  cardTitle.textContent = card.name;
+  cardImage.src = link;
+  cardImage.alt = name;
+  cardTitle.textContent = name;
   
   cardRemoveBtn.addEventListener('click', () => removeCard(cardsElement));
 
   cardsElement.addEventListener('click', likeCard);
 
   cardImage.addEventListener('click', () => {
-    openImgPopupModal({ src: card.link, alt: card.name });
+    openImgPopupModal({ src: link, alt: name });
   });
 
   return cardsElement;
