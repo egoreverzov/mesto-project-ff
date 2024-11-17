@@ -34,12 +34,25 @@ const closePopupBtns = document.querySelectorAll('.popup__close');
 
 let currentUserId = null;
 
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inputErrorClass: 'popup__input_invalid'
+};
+
+const clearConfig = {
+  inputSelector: '.popup__input',
+  submitButton: '.popup__button',
+  inputErrorClass: 'popup__input_invalid',
+  errorClass: '.popup__input_error'
+};
 
 // imports
 import '../pages/index.css';
 import { createCard, handleLike, hasMyLike } from '../components/card.js';
 import { openPopup, closePopup } from '../components/modal.js';
-import { enableValidation, validationConfig, clearConfig, clearValidation } from './validation.js';
+import { enableValidation, clearValidation } from './validation.js';
 import { getUserData, getCardsArray, updateCardServ, newCard, deleteCardApi, newAvatar } from './api.js';
 
 
@@ -99,16 +112,15 @@ function changeAvatar(evt) {
   formAvatar.querySelector('.popup__button').textContent = 'Сохранение...'
   newAvatar(avatarInput.value)
     .then((newPicture) => {
-      profilePhoto.style.backgroundImage = `url(${newPicture.avatar})`
+      profilePhoto.style.backgroundImage = `url(${newPicture.avatar})`;
+      closePopup(avatarPopUp);
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
-      formAvatar.querySelector('.popup__button').textContent = 'Сохранено'
+      formAvatar.querySelector('.popup__button').textContent = 'Сохранить'
     })
-  
-    closePopup(avatarPopUp);
 }
 
 formAvatar.addEventListener('submit', changeAvatar);
@@ -122,6 +134,8 @@ function handleEditForm(evt) {
     .then((personData) => {
       profileName.textContent = personData.name;
       profileDescr.textContent = personData.about;
+
+      closePopup(editPopup);
     })
     .catch((err) => {
       console.log(err);
@@ -129,8 +143,6 @@ function handleEditForm(evt) {
     .finally(() => {
       formEdit.querySelector('.popup__button').textContent = 'Сохранено'
     })
-
-  closePopup(editPopup);
 }
 
 formEdit.addEventListener('submit', handleEditForm); 
@@ -142,8 +154,11 @@ function addNewCard(evt) {
   formAddCard.querySelector('.popup__button').textContent = 'Создание...'
   newCard(cardInputPlaceName.value, cardInputLink.value)
     .then((card) => {
-      const newCard = createCard(card, openPopupImg, handleLike, openConfirmWindow);
+      const newCard = createCard(card, currentUserId, openPopupImg, handleLike, hasMyLike, openConfirmWindow);
       cardsList.prepend(newCard);
+
+      closePopup(addPopup);
+      evt.currentTarget.reset();
     })
     .catch((err) => {
       console.log(err);
@@ -151,27 +166,23 @@ function addNewCard(evt) {
     .finally(() => {
         formAddCard.querySelector('.popup__button').textContent = 'Создать'
     })
-
-  evt.currentTarget.reset();
-  closePopup(addPopup);
 }
 
 formAddCard.addEventListener('submit', addNewCard);
 
-
 // открытие окна подтверждения удаления поста
 function openConfirmWindow(currentCard, cardId) {
   openPopup(confirmPopUp);
-  confirmBtn.addEventListener('click', () => {
+  confirmBtn.onclick = () => {
     deleteCardApi(cardId)
-      .then(() => {
-        currentCard.remove();
-        closePopup(confirmPopUp);
-      })
-      .catch((err => {
-        console.log(err);
-      }))
-  })
+    .then(() => {
+      currentCard.remove();
+      closePopup(confirmPopUp);
+    })
+    .catch((err => {
+      console.log(err);
+    }))
+  }
 }
 
 // вызов функции живой валидации
@@ -190,17 +201,11 @@ function addCardAndInfo() {
     profilePhoto.style.backgroundImage = `url(${avatar})`;
 
     currentUserId = userData['_id']
-    // console.log(currentUserId)
    
     // вывести карточки на страницу
     cardsInitial.forEach(item => { 
-      const addedCard = createCard(item, openPopupImg, handleLike, openConfirmWindow);
-      if (currentUserId !== item.owner['_id']) {
-        addedCard.querySelector('.card__delete-button').classList.add('card__delete-button-hidden');
-      }
-      if (hasMyLike(item, currentUserId)) {
-        addedCard.querySelector('.card__like-button').classList.add('card__like-button_is-active');
-      }
+      const addedCard = createCard(item, currentUserId, openPopupImg, handleLike, hasMyLike, openConfirmWindow);
+
       cardsList.append(addedCard);
     });
   })

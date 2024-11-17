@@ -1,17 +1,3 @@
-const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inputErrorClass: 'popup__input_invalid'
-};
-
-const clearConfig = {
-  inputSelector: '.popup__input',
-  submitButton: '.popup__button',
-  inputErrorClass: 'popup__input_invalid',
-  errorClass: '.popup__input_error'
-};
-
 const enableValidation = (validationElements) => {
   const formList = Array.from(document.querySelectorAll(validationElements.formSelector));
 
@@ -22,7 +8,6 @@ const enableValidation = (validationElements) => {
     setEventListeners(formElement, validationElements);
   });
 };
-
 
 const setEventListeners = (formElement, validationElements) => {
   const inputList = Array.from(formElement.querySelectorAll(validationElements.inputSelector));
@@ -97,4 +82,4 @@ function clearValidation(formElement, validationClear) {
   toggleButtonState(inputList, buttonElement);
 }
 
-export { enableValidation, validationConfig, clearConfig, clearValidation }
+export { enableValidation, clearValidation }

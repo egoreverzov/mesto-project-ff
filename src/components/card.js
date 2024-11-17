@@ -1,6 +1,7 @@
-// @todo: Функция создания карточки
+import { addLikeApi, deleteLikeApi } from "../scripts/api";
 
-function createCard(card, openImgPopupModal, onLike, delCardApi) {
+// @todo: Функция создания карточки
+function createCard(card, userId, openImgPopupModal, onLike, likedCard, delCardApi) {
   const cardsTemplate = document.querySelector('#card-template').content;
   const cardsElement = cardsTemplate.querySelector('.card').cloneNode(true);
 
@@ -14,13 +15,20 @@ function createCard(card, openImgPopupModal, onLike, delCardApi) {
   cardImage.alt = card.name;
   cardTitle.textContent = card.name;
   likeCount.textContent = card.likes.length;
+
+  if (userId !== card.owner['_id']) {
+    cardRemoveBtn.classList.add('card__delete-button-hidden');
+  }
   
+  if (likedCard(card, userId)) {
+    likeBtn.classList.add('card__like-button_is-active');
+  }
+
   cardRemoveBtn.addEventListener('click', () => {
     delCardApi(cardsElement, card['_id']);
   });
 
   likeBtn.addEventListener('click', (evt) => {
-    // console.log(card['_id']);
     onLike(evt, card['_id'], likeCount);
   });
 
@@ -30,12 +38,6 @@ function createCard(card, openImgPopupModal, onLike, delCardApi) {
 
   return cardsElement;
 }
-
-// @todo: Функция удаления карточки
-// function removeCardElement(cardElem) {
-//   cardElem.remove();
-// }
-
 
 // функция обработки лайка - если клик на сердечко, меняем его состояние
 function handleLike(evt, cardId, likeNumber) {
@@ -58,6 +60,7 @@ function handleLike(evt, cardId, likeNumber) {
   }
 }
 
+// функция определения цвета лайка при первичной отрисовке
 function hasMyLike(objLiked, myId) {
   return objLiked.likes.some(likedEl => {
     return likedEl['_id'] === myId;
@@ -65,4 +68,3 @@ function hasMyLike(objLiked, myId) {
 }
 
 export { createCard, handleLike, hasMyLike }
-import { addLikeApi, deleteLikeApi } from "../scripts/api";
