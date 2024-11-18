@@ -141,7 +141,7 @@ function handleEditForm(evt) {
       console.log(err);
     })
     .finally(() => {
-      formEdit.querySelector('.popup__button').textContent = 'Сохранено'
+      formEdit.querySelector('.popup__button').textContent = 'Сохранить'
     })
 }
 
